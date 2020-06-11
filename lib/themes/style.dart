@@ -5,6 +5,7 @@ ThemeData appTheme() {
   final primaryColor = TinyColor(Colors.teal).darken(15).color;
   final accentColor = TinyColor(Colors.teal).lighten(15).color;
   final scaffoldBackgroundColor = TinyColor(Colors.white).darken(10).color;
+  final splashColor = TinyColor(Colors.blue).darken(20).color;
 
   return ThemeData(
     primaryColor: primaryColor,
@@ -13,6 +14,7 @@ ThemeData appTheme() {
     dividerColor: Colors.white,
     buttonColor: Colors.white,
     scaffoldBackgroundColor: scaffoldBackgroundColor,
+    splashColor: splashColor,
     canvasColor: Colors.black,
     fontFamily: 'RobotoCondensed',
     textTheme: TextTheme(
