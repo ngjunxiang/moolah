@@ -7,7 +7,7 @@ class Bar extends StatelessWidget {
   final String barLabel;
 
   final int _baseDurationMs = 1000;
-  final double _maxElementHeight = 100;
+  final double _maxElementHeight = 150;
 
   const Bar(this.label, this.barLabel, this.height);
 
