@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/transaction.dart';
+import '../transactions_screen.dart';
 import './bar.dart';
 
 class BarChart extends StatelessWidget {
@@ -38,17 +39,20 @@ class BarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: pastWeekTransactionValues.map((t) {
-          return Bar(
-            t['day'],
-            t['amount'].toString(),
-            maxSpending == 0.0 ? 0.0 : t['amount'] / maxSpending,
-          );
-        }).toList(),
+    return Container(
+      height: TransactionsScreen.chartHeight,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: pastWeekTransactionValues.map((t) {
+            return Bar(
+              t['day'],
+              t['amount'].toStringAsFixed(2),
+              maxSpending == 0.0 ? 0.0 : t['amount'] / maxSpending,
+            );
+          }).toList(),
+        ),
       ),
     );
   }

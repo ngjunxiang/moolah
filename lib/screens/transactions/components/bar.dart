@@ -7,7 +7,7 @@ class Bar extends StatelessWidget {
   final String barLabel;
 
   final int _baseDurationMs = 1000;
-  final double _maxElementHeight = 150;
+  final double _maxElementHeight = 160;
 
   const Bar(this.label, this.barLabel, this.height);
 
@@ -23,9 +23,9 @@ class Bar extends StatelessWidget {
               height: (1 - animatedHeight) * _maxElementHeight,
             ),
             Text(
-              '\$$barLabel',
+              barLabel == '0.00' ? '' : '\$$barLabel',
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 13,
               ),
             ),
             Container(
@@ -36,6 +36,7 @@ class Bar extends StatelessWidget {
             Text(
               label,
               style: const TextStyle(
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             )

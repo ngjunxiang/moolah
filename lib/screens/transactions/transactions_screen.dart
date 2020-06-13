@@ -1,30 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:moolah/models/transaction.dart';
+import 'package:provider/provider.dart';
 
 import './components/bar_chart.dart';
+import './components/transaction_list.dart';
+import '../../providers/transactions_provider.dart';
 
 class TransactionsScreen extends StatelessWidget {
-  TransactionsScreen({Key key}) : super(key: key);
+  static final headerHeight = 50.0;
+  static final chartHeight = 220.0;
 
-  List<Transaction> transactions = [
-    Transaction(
-        '1', 'Test Txn 1', TransactionType.EXPENDITURE, 52.50, DateTime.now()),
-    Transaction('1', 'Test Txn 2', TransactionType.EXPENDITURE, 73.85,
-        DateTime.parse('2020-06-10 00:00:00.000')),
-    Transaction('1', 'Test Txn 3', TransactionType.EXPENDITURE, 22.35,
-        DateTime.parse('2020-06-09 00:00:00.000')),
-    Transaction('1', 'Test Txn 4', TransactionType.EXPENDITURE, 10.99,
-        DateTime.parse('2020-06-08 00:00:00.000')),
-    Transaction('1', 'Test Txn 4', TransactionType.EXPENDITURE, 100.85,
-        DateTime.parse('2020-06-07 00:00:00.000')),
-    Transaction('1', 'Test Txn 4', TransactionType.EXPENDITURE, 40.56,
-        DateTime.parse('2020-06-06 00:00:00.000')),
-    Transaction('1', 'Test Txn 4', TransactionType.EXPENDITURE, 30.00,
-        DateTime.parse('2020-06-05 00:00:00.000')),
-  ];
-
-  Widget _buildHeader(BuildContext context, double availableHeight) {
+  Widget _buildHeader(BuildContext context) {
     return Container(
+      height: TransactionsScreen.headerHeight,
       padding: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 10,
@@ -36,31 +23,66 @@ class TransactionsScreen extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final availableHeight = mediaQuery.size.height -
-        mediaQuery.padding.top -
-        mediaQuery.padding.bottom;
-
-    final pageBody = SafeArea(
-      bottom: false,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _buildHeader(context, availableHeight),
-            BarChart(transactions),
-          ],
+  Widget _buildAddButton(BuildContext context) {
+    return Positioned(
+      top: 10,
+      right: 10,
+      child: FloatingActionButton(
+        onPressed: () => _startAddNewTransaction(context),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).textTheme.button.color,
         ),
+        backgroundColor: Theme.of(context).buttonColor,
       ),
     );
+  }
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
-      },
-      child: pageBody,
-    );
+  void _startAddNewTransaction(BuildContext context) {
+    print('add new txn');
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _transactionsProvider =
+        Provider.of<TransactionsProvider>(context, listen: true);
+
+    if (_transactionsProvider.status == TransactionsLoadingStatus.NotLoaded) {
+      _transactionsProvider.fetchTransactions();
+    }
+
+    return _transactionsProvider.status != TransactionsLoadingStatus.Loaded
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+            child: SafeArea(
+              bottom: false,
+              child: Stack(
+                children: <Widget>[
+                  _buildAddButton(context),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      _buildHeader(context),
+                      BarChart(_transactionsProvider.transactions.where((t) {
+                        return t.dateTime.isAfter(
+                          DateTime.now().subtract(
+                            Duration(days: 7),
+                          ),
+                        );
+                      }).toList()),
+                      Divider(),
+                      TransactionList(_transactionsProvider.transactions),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }
