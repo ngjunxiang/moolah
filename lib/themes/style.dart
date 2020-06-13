@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:tinycolor/tinycolor.dart';
 
 ThemeData appTheme() {
-  final primaryColor = TinyColor(Colors.teal).darken(15).color;
-  final accentColor = TinyColor(Colors.teal).lighten(15).color;
-  final scaffoldBackgroundColor = TinyColor(Colors.white).darken(10).color;
-  final splashColor = TinyColor(Colors.blue).darken(20).color;
+  final color1 = TinyColor.fromString('#28587B');
+  final color2 = TinyColor.fromString('#9FB4C7');
+  final color3 = TinyColor.fromString('#9FB798');
+  final color4 = TinyColor.fromString('#EEEEFF');
+
+  final primaryColor = color1.darken(10).color;
+  final accentColor = color2.darken(5).color;
+  final focusColor = color2.darken(15).color;
+  final scaffoldBackgroundColor = color4.color;
+  final splashColor = color3.darken(20).color;
+  final buttonColor = color2.darken(5).color;
+  final dividerColor = TinyColor(Colors.grey).darken(10).color;
 
   return ThemeData(
     primaryColor: primaryColor,
     accentColor: accentColor,
     hintColor: Colors.white,
-    dividerColor: Colors.white,
-    buttonColor: Colors.white,
+    focusColor: focusColor,
+    dividerColor: dividerColor,
+    buttonColor: buttonColor,
     scaffoldBackgroundColor: scaffoldBackgroundColor,
     splashColor: splashColor,
     canvasColor: Colors.black,
@@ -22,13 +31,18 @@ ThemeData appTheme() {
         color: Colors.black,
         fontSize: 14,
       ),
-      button: const TextStyle(
-        color: Colors.white,
+      button: TextStyle(
+        color: primaryColor,
         fontSize: 18,
       ),
       headline1: const TextStyle(
         color: Colors.black,
         fontSize: 30,
+        fontWeight: FontWeight.bold,
+      ),
+      headline2: TextStyle(
+        color: TinyColor(primaryColor).darken(5).color,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
       subtitle1: TextStyle(
