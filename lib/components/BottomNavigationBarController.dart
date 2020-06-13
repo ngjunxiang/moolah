@@ -13,32 +13,17 @@ class BottomNavigationBarController extends StatefulWidget {
 
 class _BottomNavigationBarControllerState
     extends State<BottomNavigationBarController> {
-  final List<Widget> pages = [
-    OverviewScreen(
-      key: PageStorageKey('Overview'),
-    ),
-    TransactionsScreen(
-      key: PageStorageKey('Transactions'),
-    ),
-    InvestmentsScreen(
-      key: PageStorageKey('Investments'),
-    ),
-    InsuranceScreen(
-      key: PageStorageKey('Insurance'),
-    ),
-  ];
-
-  final PageStorageBucket bucket = PageStorageBucket();
-
+  List<Widget> _pages;
+  PageStorageBucket bucket = PageStorageBucket();
   int _selectedIndex = 0;
 
-  Widget _bottomNavigationBar(int selectedIndex) => BottomNavigationBar(
+  Widget _bottomNavigationBar() => BottomNavigationBar(
         onTap: (int index) => setState(() => _selectedIndex = index),
-        currentIndex: selectedIndex,
+        currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Theme.of(context).accentColor,
+        unselectedItemColor: Theme.of(context).accentColor,
+        selectedItemColor: Theme.of(context).scaffoldBackgroundColor,
         selectedLabelStyle: Theme.of(context).textTheme.subtitle1,
         unselectedLabelStyle: Theme.of(context).textTheme.subtitle1,
         iconSize: 30,
@@ -64,16 +49,28 @@ class _BottomNavigationBarControllerState
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final availableHeight = mediaQuery.size.height -
+        mediaQuery.padding.top - mediaQuery.padding.bottom;
+
+    _pages = [
+      OverviewScreen(
+        key: PageStorageKey('Overview'),
+      ),
+      TransactionsScreen(),
+      InvestmentsScreen(
+        key: PageStorageKey('Investments'),
+      ),
+      InsuranceScreen(
+        key: PageStorageKey('Insurance'),
+      ),
+    ];
+
     return Scaffold(
-      bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
-        },
-        child: PageStorage(
-          child: pages[_selectedIndex],
-          bucket: bucket,
-        ),
+      bottomNavigationBar: _bottomNavigationBar(),
+      body: PageStorage(
+        child: _pages[_selectedIndex],
+        bucket: bucket,
       ),
     );
   }
