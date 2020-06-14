@@ -34,9 +34,8 @@ class TransactionList extends StatelessWidget {
                   currentDate = t.dateTime;
                   res = [
                     Text(
-                      DateFormat(DateFormat.MONTH_WEEKDAY_DAY)
-                          .format(t.dateTime),
-                        style: Theme.of(context).textTheme.headline2,
+                      DateFormat.yMMMMEEEEd().format(t.dateTime),
+                      style: Theme.of(context).textTheme.headline2,
                     ),
                   ];
                 }

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import './components/bar_chart.dart';
 import './components/transaction_list.dart';
+import './components/transaction_modal.dart';
+import '../../components/speed_dial.dart';
 import '../../providers/transactions_provider.dart';
 
 class TransactionsScreen extends StatelessWidget {
@@ -23,28 +25,21 @@ class TransactionsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAddButton(BuildContext context) {
-    return Positioned(
-      top: 10,
-      right: 10,
-      child: FloatingActionButton(
-        onPressed: () => _startAddNewTransaction(context),
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).textTheme.button.color,
-        ),
-        backgroundColor: Theme.of(context).buttonColor,
-      ),
-    );
-  }
-
   void _startAddNewTransaction(BuildContext context) {
-    print('add new txn');
-    return null;
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () {},
+            child: TransactionModal(),
+            behavior: HitTestBehavior.opaque,
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    final _speedDial = SpeedDial();
     final _transactionsProvider =
         Provider.of<TransactionsProvider>(context, listen: true);
 
@@ -59,12 +54,12 @@ class TransactionsScreen extends StatelessWidget {
         : GestureDetector(
             onTap: () {
               FocusScope.of(context).requestFocus(new FocusNode());
+              _speedDial.close();
             },
             child: SafeArea(
               bottom: false,
               child: Stack(
                 children: <Widget>[
-                  _buildAddButton(context),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
@@ -80,6 +75,7 @@ class TransactionsScreen extends StatelessWidget {
                       TransactionList(_transactionsProvider.transactions),
                     ],
                   ),
+                  _speedDial,
                 ],
               ),
             ),

@@ -11,7 +11,8 @@ ThemeData appTheme() {
   final accentColor = color2.darken(5).color;
   final focusColor = color2.darken(15).color;
   final scaffoldBackgroundColor = color4.color;
-  final splashColor = color3.darken(20).color;
+  final canvasColor = color4.color;
+  final splashColor = color1.darken(5).color;
   final buttonColor = color2.darken(5).color;
   final dividerColor = TinyColor(Colors.grey).darken(10).color;
 
@@ -24,7 +25,7 @@ ThemeData appTheme() {
     buttonColor: buttonColor,
     scaffoldBackgroundColor: scaffoldBackgroundColor,
     splashColor: splashColor,
-    canvasColor: Colors.black,
+    canvasColor: canvasColor,
     fontFamily: 'RobotoCondensed',
     textTheme: TextTheme(
       bodyText1: const TextStyle(

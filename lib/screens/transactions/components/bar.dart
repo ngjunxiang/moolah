@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
+import 'package:tinycolor/tinycolor.dart';
 
 class Bar extends StatelessWidget {
   final double height;
@@ -31,7 +32,7 @@ class Bar extends StatelessWidget {
             Container(
               width: 25,
               height: animatedHeight * _maxElementHeight,
-              color: Theme.of(context).splashColor,
+              color: TinyColor.fromString('#9FB798').darken(20).color,
             ),
             Text(
               label,
