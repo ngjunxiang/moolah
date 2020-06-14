@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:moolah/components/BottomNavigationBarController.dart';
+import 'package:moolah/components/bottom_navigation_bar_controller.dart';
 import 'package:provider/provider.dart';
 
 import './providers/transactions_provider.dart';
@@ -20,6 +20,7 @@ void main() {
 class MoolahApp extends StatelessWidget {
   Widget _buildApp(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Moolah!',
       theme: appTheme(),
       home: BottomNavigationBarController(),
