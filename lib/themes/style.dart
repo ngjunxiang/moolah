@@ -9,7 +9,8 @@ ThemeData appTheme() {
 
   final primaryColor = color1.darken(10).color;
   final accentColor = color2.darken(5).color;
-  final focusColor = color2.darken(15).color;
+  final focusColor = color2.darken(25).color;
+  final hintColor = TinyColor(Colors.grey).lighten(10).color.withOpacity(0.95);
   final scaffoldBackgroundColor = color4.color;
   final canvasColor = color4.color;
   final splashColor = color1.darken(5).color;
@@ -19,7 +20,7 @@ ThemeData appTheme() {
   return ThemeData(
     primaryColor: primaryColor,
     accentColor: accentColor,
-    hintColor: Colors.white,
+    hintColor: hintColor,
     focusColor: focusColor,
     dividerColor: dividerColor,
     buttonColor: buttonColor,

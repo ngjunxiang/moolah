@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moolah/models/transaction.dart';
 import 'package:provider/provider.dart';
 
 import './components/bar_chart.dart';
@@ -25,7 +26,7 @@ class TransactionsScreen extends StatelessWidget {
     );
   }
 
-  void _startAddNewTransaction(BuildContext context) {
+  void _startAddNewTransaction(BuildContext context, TransactionType transactionType) {
     showModalBottomSheet(
         context: context,
         builder: (_) {
@@ -39,7 +40,7 @@ class TransactionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _speedDial = SpeedDial();
+    final _speedDial = SpeedDial(_startAddNewTransaction);
     final _transactionsProvider =
         Provider.of<TransactionsProvider>(context, listen: true);
 

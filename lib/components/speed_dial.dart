@@ -1,8 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:moolah/models/transaction.dart';
 
 class SpeedDial extends StatefulWidget {
+  final Function onPressedHandler;
   bool isOpened = false;
+
+  SpeedDial(this.onPressedHandler);
+
   _SpeedDialState _speedDialState = _SpeedDialState();
 
   @override
@@ -65,14 +70,43 @@ class _SpeedDialState extends State<SpeedDial>
     super.dispose();
   }
 
-  Widget _getButton(String tooltip, Icon icon, Function onPressedHandler) {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: onPressedHandler,
-        tooltip: tooltip,
-        child: icon,
-        elevation: _shouldHaveElevation ? 6.0 : 0,
-      ),
+  Widget _getButton(BuildContext context, String tooltip, Icon icon,
+      Function onPressedHandler) {
+    TransactionType transactionType = tooltip == 'Expense'
+        ? TransactionType.EXPENDITURE
+        : TransactionType.INCOME;
+
+    return Row(
+      children: <Widget>[
+        widget.isOpened
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(5.0),
+                child: Container(
+                  color: Theme.of(context).hintColor,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 6.0,
+                  ),
+                  child: Text(
+                    tooltip,
+                    style: Theme.of(context).textTheme.button,
+                  ),
+                ),
+              )
+            : Container(),
+        SizedBox(
+          width: 4,
+        ),
+        FloatingActionButton(
+          onPressed: () => onPressedHandler(
+            context,
+            transactionType,
+          ),
+          tooltip: tooltip,
+          child: icon,
+          elevation: _shouldHaveElevation ? 20.0 : 0,
+        ),
+      ],
     );
   }
 
@@ -110,29 +144,40 @@ class _SpeedDialState extends State<SpeedDial>
       top: 10,
       right: 10,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Transform(
             transform: Matrix4.translationValues(
               0.0,
               _translateButton.value * 2.0,
-              8.0,
+              0.0,
             ),
-            child: _getButton('Income', Icon(Icons.add_box), () {}),
+            child: _getButton(
+              context,
+              'Income',
+              Icon(Icons.add_box),
+              () {},
+            ),
           ),
           Transform(
             transform: Matrix4.translationValues(
               0.0,
               _translateButton.value - _fabHeight,
-              9.0,
+              0.0,
             ),
-            child: _getButton('Expense', Icon(Icons.remove_circle), () {}),
+            child: _getButton(
+              context,
+              'Expense',
+              Icon(Icons.remove_circle),
+              widget.onPressedHandler,
+            ),
           ),
           Transform(
             transform: Matrix4.translationValues(
               0.0,
               -2 * _fabHeight,
-              10.0,
+              0.0,
             ),
             child: _getMenuButton(context, 'Add Transaction'),
           ),
