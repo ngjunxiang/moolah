@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:moolah/models/transaction.dart';
 import 'package:provider/provider.dart';
 
 import './components/bar_chart.dart';
 import './components/transaction_list.dart';
 import './components/transaction_modal.dart';
 import '../../components/speed_dial.dart';
+import '../../models/transaction.dart';
 import '../../providers/transactions_provider.dart';
 
 class TransactionsScreen extends StatelessWidget {
@@ -26,13 +26,14 @@ class TransactionsScreen extends StatelessWidget {
     );
   }
 
-  void _startAddNewTransaction(BuildContext context, TransactionType transactionType) {
+  void _startAddNewTransaction(
+      BuildContext context, TransactionType transactionType) {
     showModalBottomSheet(
         context: context,
         builder: (_) {
           return GestureDetector(
             onTap: () {},
-            child: TransactionModal(),
+            child: TransactionModal(transactionType),
             behavior: HitTestBehavior.opaque,
           );
         });

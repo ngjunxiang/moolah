@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/transaction.dart';
+import '../../../themes/style.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> _transactions;
@@ -39,14 +41,71 @@ class TransactionList extends StatelessWidget {
                     ),
                   ];
                 }
-                res.add(ListTile(
-                  title: Text(
-                    t.title,
-                    style: Theme.of(context).textTheme.bodyText1,
+                res.add(
+                  Dismissible(
+                    key: ValueKey(t.id),
+                    background: Container(
+                      color: Theme.of(context).errorColor,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(
+                        right: 10,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 4,
+                      ),
+                    ),
+                    direction: DismissDirection.endToStart,
+                    confirmDismiss: (direction) {
+                      return showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text('Are you sure?'),
+                          content: Text(
+                              'Do you want to remove this item from the cart?'),
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () => Navigator.of(ctx).pop(false),
+                              child: Text('No'),
+                            ),
+                            FlatButton(
+                              onPressed: () => Navigator.of(ctx).pop(true),
+                              child: Text('Yes'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    onDismissed: (direction) {
+//                      Provider.of<Cart>(
+//                        context,
+//                        listen: false,
+//                      ).removeCartItem(productId);
+                    },
+                    child: ListTile(
+                      leading: Container(
+                        height: double.infinity,
+                        width: 5,
+                        color: ExpenseColors().getTypeColor(t.expenseType),
+                      ),
+                      title:
+                          Text(
+                            t.title,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+
+                      subtitle: Text(t.transactionType == TransactionType.Income
+                          ? describeEnum(t.transactionType)
+                          : describeEnum(t.expenseType)),
+                      trailing: Text('\$${t.amount.toStringAsFixed(2)}'),
+                    ),
                   ),
-                  subtitle: Text(t.transactionType.toString()),
-                  trailing: Text('\$${t.amount.toStringAsFixed(2)}'),
-                ));
+                );
                 return Column(
                   children: <Widget>[...res],
                 );

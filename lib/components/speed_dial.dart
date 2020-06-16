@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:moolah/models/transaction.dart';
+
+import '../models/transaction.dart';
 
 class SpeedDial extends StatefulWidget {
   final Function onPressedHandler;
@@ -73,8 +74,8 @@ class _SpeedDialState extends State<SpeedDial>
   Widget _getButton(BuildContext context, String tooltip, Icon icon,
       Function onPressedHandler) {
     TransactionType transactionType = tooltip == 'Expense'
-        ? TransactionType.EXPENDITURE
-        : TransactionType.INCOME;
+        ? TransactionType.Expense
+        : TransactionType.Income;
 
     return Row(
       children: <Widget>[

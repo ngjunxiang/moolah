@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:moolah/models/transaction.dart';
+import 'package:moolah/themes/style.dart';
 import 'package:simple_animations/simple_animations.dart';
-import 'package:tinycolor/tinycolor.dart';
 
 class Bar extends StatelessWidget {
   final double height;
   final String label;
-  final String barLabel;
+  final double barLabel;
+  final Map<ExpenseType, double> expenseData;
 
   final int _baseDurationMs = 1000;
   final double _maxElementHeight = 160;
 
-  const Bar(this.label, this.barLabel, this.height);
+  const Bar(this.label, this.barLabel, this.height, this.expenseData);
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +26,16 @@ class Bar extends StatelessWidget {
               height: (1 - animatedHeight) * _maxElementHeight,
             ),
             Text(
-              barLabel == '0.00' ? '' : '\$$barLabel',
+              barLabel == 0.0 ? '' : '\$${barLabel.toStringAsFixed(2)}',
               style: const TextStyle(
                 fontSize: 13,
               ),
             ),
-            Container(
+            ...expenseData.entries.map((entry) => Container(
               width: 25,
-              height: animatedHeight * _maxElementHeight,
-              color: TinyColor.fromString('#9FB798').darken(20).color,
-            ),
+              height: animatedHeight * _maxElementHeight * entry.value / barLabel,
+              color: ExpenseColors().getTypeColor(entry.key),
+            )).toList(),
             Text(
               label,
               style: const TextStyle(

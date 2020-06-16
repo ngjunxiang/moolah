@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moolah/screens/insurance/insurance_screen.dart';
-import 'package:moolah/screens/investments/investments_screen.dart';
 
 import '../screens/overview/overview_screen.dart';
 import '../screens/transactions/transactions_screen.dart';
+import '../screens/insurance/insurance_screen.dart';
+import '../screens/investments/investments_screen.dart';
 
 class BottomNavigationBarController extends StatefulWidget {
   @override

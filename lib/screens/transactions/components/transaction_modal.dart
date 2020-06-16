@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:moolah/models/transaction.dart';
+
+import '../../../models/transaction.dart';
 
 class TransactionModal extends StatefulWidget {
+  final TransactionType transactionType;
+
+  TransactionModal(this.transactionType);
+
   @override
   _TransactionModalState createState() => _TransactionModalState();
 }
@@ -12,7 +17,10 @@ class _TransactionModalState extends State<TransactionModal> {
   final _amountController = TextEditingController();
   DateTime _selectedDate;
 
-  void _addNewTransaction(String transactionTitle, double transactionAmount,
+  void _addNewTransaction(
+      String transactionTitle,
+      TransactionType transactionType,
+      double transactionAmount,
       DateTime selectedDate) {
 //      final newTransaction = Transaction(
 //          title: transactionTitle,
@@ -26,7 +34,7 @@ class _TransactionModalState extends State<TransactionModal> {
 //      });
   }
 
-  void _submitTransaction() {
+  void _submitTransaction(BuildContext context) {
     if (_amountController.text.isEmpty) {
       return;
     }
@@ -38,7 +46,20 @@ class _TransactionModalState extends State<TransactionModal> {
       return;
     }
 
-    _addNewTransaction(inputTitle, inputAmount, _selectedDate);
+    _addNewTransaction(
+        inputTitle, widget.transactionType, inputAmount, _selectedDate);
+
+    Scaffold.of(context).hideCurrentSnackBar();
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Transaction added!'),
+        duration: Duration(seconds: 2),
+        action: SnackBarAction(
+          label: 'UNDO',
+          onPressed: () => null,
+        ),
+      ),
+    );
 
     Navigator.of(context).pop();
   }
@@ -82,13 +103,13 @@ class _TransactionModalState extends State<TransactionModal> {
               TextField(
                 decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,
-                onSubmitted: (_) => _submitTransaction(),
+                onSubmitted: (_) => _submitTransaction(context),
               ),
               TextField(
                 decoration: const InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (_) => _submitTransaction(),
+                onSubmitted: (_) => _submitTransaction(context),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
@@ -123,7 +144,7 @@ class _TransactionModalState extends State<TransactionModal> {
               ),
               textColor: Theme.of(context).textTheme.button.color,
               color: Theme.of(context).buttonColor,
-              onPressed: _submitTransaction,
+              onPressed: () => _submitTransaction(context),
             ),
           ),
         ],

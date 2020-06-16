@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import './bar.dart';
 import '../../../models/transaction.dart';
 import '../transactions_screen.dart';
-import './bar.dart';
 
 class BarChart extends StatelessWidget {
   final List<Transaction> pastWeekTransactions;
@@ -15,6 +15,12 @@ class BarChart extends StatelessWidget {
       final weekday = DateTime.now().subtract(
         Duration(days: index),
       );
+      final expenseData = {
+        ExpenseType.Bills: 0.0,
+        ExpenseType.Food: 0.0,
+        ExpenseType.Transportation: 0.0,
+        ExpenseType.Retail: 0.0,
+      };
 
       double totalSum = 0;
       for (var t in pastWeekTransactions) {
@@ -22,12 +28,17 @@ class BarChart extends StatelessWidget {
             t.dateTime.month == weekday.month &&
             t.dateTime.year == weekday.year) {
           totalSum += t.amount;
+
+          if (t.transactionType == TransactionType.Expense) {
+            expenseData.update(t.expenseType, (value) => value + t.amount);
+          }
         }
       }
 
       return {
         'day': DateFormat.E().format(weekday).substring(0, 3),
         'amount': totalSum,
+        'expenseData': expenseData,
       };
     }).reversed.toList();
   }
@@ -48,8 +59,9 @@ class BarChart extends StatelessWidget {
           children: pastWeekTransactionValues.map((t) {
             return Bar(
               t['day'],
-              t['amount'].toStringAsFixed(2),
+              t['amount'],
               maxSpending == 0.0 ? 0.0 : t['amount'] / maxSpending,
+              t['expenseData'],
             );
           }).toList(),
         ),
