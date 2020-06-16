@@ -25,7 +25,7 @@ class _BottomNavigationBarControllerState
         unselectedItemColor: Theme.of(context).accentColor,
         selectedItemColor: Theme.of(context).scaffoldBackgroundColor,
         selectedLabelStyle: Theme.of(context).textTheme.subtitle1,
-        unselectedLabelStyle: Theme.of(context).textTheme.subtitle1,
+        unselectedLabelStyle: Theme.of(context).textTheme.subtitle2,
         iconSize: 30,
         items: [
           BottomNavigationBarItem(

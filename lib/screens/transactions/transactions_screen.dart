@@ -53,14 +53,14 @@ class TransactionsScreen extends StatelessWidget {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-              _speedDial.close();
-            },
-            child: SafeArea(
+        : SafeArea(
               bottom: false,
-              child: Stack(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  _speedDial.close();
+                },
+                child: Stack(
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

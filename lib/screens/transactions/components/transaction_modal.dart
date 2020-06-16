@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -100,6 +101,10 @@ class _TransactionModalState extends State<TransactionModal> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              Text(
+                'Add New ${describeEnum(widget.transactionType)}',
+                style: Theme.of(context).textTheme.headline2,
+              ),
               TextField(
                 decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,

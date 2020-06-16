@@ -51,19 +51,23 @@ ThemeData appTheme() {
       subtitle1: TextStyle(
         // NavBar
         fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+      subtitle2: TextStyle(
+        // NavBar
+        fontSize: 12,
       ),
     ),
   );
 }
 
-
-
 class ExpenseColors {
   static final Map<ExpenseType, Color> expenseColor = {
     ExpenseType.Bills: TinyColor.fromString('#7189bf').color,
     ExpenseType.Food: TinyColor.fromString('#ffc785').darken(5).color,
-    ExpenseType.Transportation:TinyColor.fromString('#72d6c9').darken(10).color,
-    ExpenseType.Retail:TinyColor.fromString('#df7599').color,
+    ExpenseType.Transportation:
+        TinyColor.fromString('#72d6c9').darken(10).color,
+    ExpenseType.Retail: TinyColor.fromString('#df7599').color,
   };
 
   Color getTypeColor(ExpenseType expenseType) => expenseColor[expenseType];

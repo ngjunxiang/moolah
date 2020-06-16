@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../models/transaction.dart';
@@ -15,7 +16,7 @@ class SpeedDial extends StatefulWidget {
   _SpeedDialState createState() => _speedDialState;
 
   void close() {
-    if (isOpened) _speedDialState.animate();
+    _speedDialState.animate();
   }
 }
 
@@ -71,11 +72,9 @@ class _SpeedDialState extends State<SpeedDial>
     super.dispose();
   }
 
-  Widget _getButton(BuildContext context, String tooltip, Icon icon,
-      Function onPressedHandler) {
-    TransactionType transactionType = tooltip == 'Expense'
-        ? TransactionType.Expense
-        : TransactionType.Income;
+  Widget _getButton(BuildContext context, String tooltip, Icon icon) {
+    TransactionType transactionType =
+        tooltip == 'Expense' ? TransactionType.Expense : TransactionType.Income;
 
     return Row(
       children: <Widget>[
@@ -99,10 +98,13 @@ class _SpeedDialState extends State<SpeedDial>
           width: 4,
         ),
         FloatingActionButton(
-          onPressed: () => onPressedHandler(
-            context,
-            transactionType,
-          ),
+          onPressed: () {
+            widget.onPressedHandler(
+              context,
+              transactionType,
+            );
+            animate();
+          },
           tooltip: tooltip,
           child: icon,
           elevation: _shouldHaveElevation ? 20.0 : 0,
@@ -113,7 +115,6 @@ class _SpeedDialState extends State<SpeedDial>
 
   Widget _getMenuButton(BuildContext context, String tooltip) {
     return FloatingActionButton(
-//        onPressed: () => _startAddNewTransaction(context),
       backgroundColor: _buttonColor.value,
       onPressed: animate,
       tooltip: tooltip,
@@ -158,7 +159,6 @@ class _SpeedDialState extends State<SpeedDial>
               context,
               'Income',
               Icon(Icons.add_box),
-              () {},
             ),
           ),
           Transform(
@@ -171,7 +171,6 @@ class _SpeedDialState extends State<SpeedDial>
               context,
               'Expense',
               Icon(Icons.remove_circle),
-              widget.onPressedHandler,
             ),
           ),
           Transform(
@@ -181,6 +180,10 @@ class _SpeedDialState extends State<SpeedDial>
               0.0,
             ),
             child: _getMenuButton(context, 'Add Transaction'),
+          ),
+          Container(
+            height: 100,
+            width: 50,
           ),
         ],
       ),
