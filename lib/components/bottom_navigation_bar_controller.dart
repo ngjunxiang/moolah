@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../screens/overview/overview_screen.dart';
-import '../screens/transactions/transactions_screen.dart';
 import '../screens/insurance/insurance_screen.dart';
 import '../screens/investments/investments_screen.dart';
+import '../screens/overview/overview_screen.dart';
+import '../screens/transactions/transactions_screen.dart';
 
 class BottomNavigationBarController extends StatefulWidget {
   @override
@@ -13,13 +13,26 @@ class BottomNavigationBarController extends StatefulWidget {
 
 class _BottomNavigationBarControllerState
     extends State<BottomNavigationBarController> {
-  List<Widget> _pages;
-  PageStorageBucket bucket = PageStorageBucket();
+  final PageStorageBucket bucket = PageStorageBucket();
+  final List<Widget> _pages = [
+    OverviewScreen(
+      key: PageStorageKey('Overview'),
+    ),
+    TransactionsScreen(
+      key: PageStorageKey('Transactions'),
+    ),
+    InvestmentsScreen(
+      key: PageStorageKey('Investments'),
+    ),
+    InsuranceScreen(
+      key: PageStorageKey('Insurance'),
+    ),
+  ];
   int _selectedIndex = 0;
 
-  Widget _bottomNavigationBar() => BottomNavigationBar(
+  Widget _bottomNavigationBar(int selectedIndex) => BottomNavigationBar(
         onTap: (int index) => setState(() => _selectedIndex = index),
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).accentColor,
@@ -27,7 +40,7 @@ class _BottomNavigationBarControllerState
         selectedLabelStyle: Theme.of(context).textTheme.subtitle1,
         unselectedLabelStyle: Theme.of(context).textTheme.subtitle2,
         iconSize: 30,
-        items: [
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.view_compact),
             title: const Text('Overview'),
@@ -51,23 +64,11 @@ class _BottomNavigationBarControllerState
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final availableHeight = mediaQuery.size.height -
-        mediaQuery.padding.top - mediaQuery.padding.bottom;
-
-    _pages = [
-      OverviewScreen(
-        key: PageStorageKey('Overview'),
-      ),
-      TransactionsScreen(),
-      InvestmentsScreen(
-        key: PageStorageKey('Investments'),
-      ),
-      InsuranceScreen(
-        key: PageStorageKey('Insurance'),
-      ),
-    ];
+        mediaQuery.padding.top -
+        mediaQuery.padding.bottom;
 
     return Scaffold(
-      bottomNavigationBar: _bottomNavigationBar(),
+      bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
       body: PageStorage(
         child: _pages[_selectedIndex],
         bucket: bucket,
